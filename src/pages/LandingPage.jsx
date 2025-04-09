@@ -43,15 +43,19 @@ const LandingPage = () => {
         </Button>
       </form>
       <img src="/banner.webp" alt="Banner of Trimmer URL Shortener App" className="w-full my-11 md:px-11" />
+      
+      <div className="flex flex-col w-full md:px-11">
+        <h3 className="text-3xl">FAQ's</h3>
+        <Accordion type="multiple" collapsible={'true'}>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>How does the Trimmr URL shortener works?</AccordionTrigger>
+            <AccordionContent>
+              When you enter a long URL, our system generates a shorter version of that URL. This shortened URL redirects to the original long URL when accessed.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
-      <Accordion type="multiple" collapsible className="w-full md:px-11">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>How does the Trimmr URL shortener works?</AccordionTrigger>
-          <AccordionContent>
-            When you enter a long URL, our system generates a shorter version of that URL. This shortened URL redirects to the original long URL when accessed.
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      </div>
 
     </div>
   );

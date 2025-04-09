@@ -5,14 +5,15 @@ export const useFetch = (cb, options = {}) => {
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
-  const fn = async(...args) => {
-    setLoading(false);
+  const fn = async (...args) => {
+    setLoading(true);
     setError(null);
 
     try {
       const response = await cb(options, ...args);
       setData(response);
-      
+      setError(null);
+
     } catch (error) {
       setError(error);
 
@@ -22,6 +23,6 @@ export const useFetch = (cb, options = {}) => {
 
   };
 
-  return { data, loading, error, fn};
+  return { data, loading, error, fn };
 
 };

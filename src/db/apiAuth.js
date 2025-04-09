@@ -24,7 +24,7 @@ export async function getCurrentUser() {
     throw new Error(error.message);
   }
 
-  return session.session?.user;
+  return session?.session?.user;
 }
 
 export async function signUp({name, email, password, profile_pic}) {
@@ -52,4 +52,12 @@ export async function signUp({name, email, password, profile_pic}) {
 
   return data;
 
+}
+
+export async function logOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }

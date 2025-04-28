@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
 import LinkPage from './pages/LinkPage';
-import RedirectLinkPage from './pages/RedirecLink';
+import RedirectLinkPage from './pages/RedirectLink';
 import UrlProvider from './Context';
 import RequireAuth from './components/RequireAuth';
 

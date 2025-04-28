@@ -14,10 +14,12 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Error from "./Error";
 import { Card } from "./ui/card";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as yup from 'yup';
 import { useFetch } from "@/hooks/UseFetch";
 import { QRCode } from "react-qrcode-logo";
+import { createUrl } from "@/db/apiUrls";
+import { BeatLoader } from "react-spinners";
 
 const CreateLink = () => {
   const { user } = UrlState();
@@ -51,7 +53,36 @@ const CreateLink = () => {
     })
   };
 
-  // useFetch()
+  const { loading, error, data, fn: fnCreateUrl } = useFetch(createUrl, { ...formValues, user_id: user.id });
+
+  const createNewLilnk = async() => {
+    setErrors([]);
+
+    try {
+      await schema.validate(formValues, { abortEarly: false });
+
+      const canvas = ref.current.canvasRef.current;
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve));
+
+      await fnCreateUrl(blob);
+    
+    } catch(errors) {
+      const newErrors = {};
+
+      errors?.inner?.forEach((err) => {
+        newErrors[err.path] = err.message;
+      });
+
+      setErrors(newErrors);
+    }
+  };
+
+  useEffect(() => {
+    if(error === null && data){
+      navigate(`/link/${data[0].id}`);
+    }
+  
+  }, [error, data])
 
   return (
     <>
@@ -73,19 +104,21 @@ const CreateLink = () => {
           }
 
           <Input id="title" placeholder="Short Link's Title" value={formValues.title} onChange={handleChange} />
-          <Error message={"some error"} />
+          {errors.title && <Error message={errors.title} />}
 
           <Input id="longUrl" placeholder="Enter your Loooong URL" value={formValues.longUrl} onChange={handleChange} />
-          <Error message={"some error"} />
+          {errors.longUrl && <Error message={errors.longUrl} />}
           
           <div className="flex items-center gap-2">
             <Card className="p-2">trimmer.in</Card> /
             <Input id="customUrl" placeholder="Custom link(optional)" value={formValues.customUrl} onChange={handleChange} />
           </div>
-          <Error message={"some error"} />
+          {error && <Error message={error.message} />}
 
           <DialogFooter className="sm:justify-start">
-            <Button variant="destructive">Save changes</Button>
+            <Button variant="destructive" disabled={loading} onClick={createNewLilnk}>
+              {loading ? <BeatLoader size={10} color="white" /> : "Create"}
+            </Button>
           </DialogFooter>
 
         </DialogContent>
